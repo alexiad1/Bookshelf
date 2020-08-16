@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block page_content %}
+
+<div class="col-md-8 offset-md-2">
+    <h1>Library</h1>
+    <hr>
+    {% for book in books %}
+    <h2>{{ book.title }} </h2>
+    <p>{{ book.author }} {{ book.page_count }} Pages</p>
+    {% endfor %}
+</div>
+{% endblock %}

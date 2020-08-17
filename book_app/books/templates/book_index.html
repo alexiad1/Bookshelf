@@ -1,12 +1,23 @@
 {% extends "base.html" %}
+{% load static %}
 {% block page_content %}
-
-<div class="col-md-8 offset-md-2">
-    <h1>Library</h1>
-    <hr>
+<h2>Books Ive read this summer</h2>
+<form action="/books/" method="POST">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit" class="btn btn-primary">Add New Book</button>
+</form>
+<div class="row">
     {% for book in books %}
-    <h2>{{ book.title }} </h2>
-    <p>{{ book.author }} {{ book.page_count }} Pages</p>
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="cadr-text">{{ book.author }} | {{ book.genre }} | {{ book.page_count}} pages</p>
+                <p>read on {{ book.read_on }}</p>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

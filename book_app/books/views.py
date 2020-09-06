@@ -10,14 +10,16 @@ def book_index(request):
         if form.is_valid():
             googleAPIURL = 'https://www.googleapis.com/books/v1/volumes'
             PARAMS = {'key': os.environ.get('googleBookKey') ,'q':form.cleaned_data['bookTitle'], 'maxResults': '1'}
+            if form.cleaned_data['author'] != None:
+                PARAMS['q'] += ' inauthor:' + form.cleaned_data['author']
             data = requests.get(url=googleAPIURL,params=PARAMS).json()
             bookInfo = data['items'][0]['volumeInfo']
 
             newBook = book(
-                title = bookInfo['title'],
-                author = bookInfo['authors'][0],
-                genre = bookInfo['categories'][0],
-                page_count = bookInfo['pageCount'],
+                title = bookInfo['title'] if 'title' in bookInfo else'N/A',
+                author = bookInfo['authors'][0] if 'authors' in bookInfo else 'N/A',
+                genre= bookInfo['categories'][0] if 'categories' in bookInfo else 'N/A',
+                page_count = bookInfo['pageCount'] if 'pageCount' in bookInfo else 0,
             )
             newBook.save()
 
